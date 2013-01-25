@@ -89,7 +89,7 @@
 			}
 			localStorage.setItem(that.localStorageKey, JSON.stringify(toSave));
 		});
-	
+
 		return this;
 	};
 	TwitterSpy.prototype.startChecking = function(interval) {
@@ -111,16 +111,16 @@
 		}
 
 		$('.spy-status').html("J'espionne pas.");
-		
+
 		return this;
 	};
 	TwitterSpy.prototype._parseString = function(str) {
-	    var args = [].slice.call(arguments, 1),
-	        i = 0;
+		var args = [].slice.call(arguments, 1),
+			i = 0;
 
-	    return str.replace(/%s/g, function() {
-	        return args[i++];
-	    });
+		return str.replace(/%s/g, function() {
+			return args[i++];
+		});
 	};
 
 	spy = new TwitterSpy('leimina');
