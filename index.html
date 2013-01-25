@@ -63,7 +63,7 @@
 				}
 			}
 
-			if (JSON.stringify(changed) !== "{}") {
+			if (JSON.stringify(changed) !== "{}" && JSON.stringify(that.pastData) !== "{}") {
 				var notifTitle = 'Nouvelle activité à ' + now.getHours() + 'h' + now.getMinutes();
 				//on construit le message de notification avec les données qui ont changées
 				var notif = [];
