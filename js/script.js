@@ -1,14 +1,22 @@
+/*!
+* Tim (lite)
+*   github.com/premasagar/tim
+*//*
+    A tiny, secure JavaScript micro-templating script.
+*/
+var tim=function(){var e=/{{\s*([a-z0-9_][\\.a-z0-9_]*)\s*}}/gi;return function(f,g){return f.replace(e,function(h,i){for(var c=i.split("."),d=c.length,b=g,a=0;a<d;a++){b=b[c[a]];if(b===void 0)throw"tim: '"+c[a]+"' not found in "+h;if(a===d-1)return b}})}}();
+
 var TwitterSpy = function(username) {
 	if (!username || !window.localStorage)
 		return false;
 	this.username = username;
 	this.watchedData = {
-		"name": "nouveau nom : %s",
-		"screen_name": "nouveau pseudo : %s",
-		"description": "nouvelle description : %s",
-		"friends_count": "%s amis",
-		"favourites_count": "%s favoris",
-		"statuses_count": "%s tweets",
+		"name": "nouveau nom : {{data}}",
+		"screen_name": "nouveau pseudo : {{data}}",
+		"description": "nouvelle description : {{data}}",
+		"friends_count": "{{data}} amis",
+		"favourites_count": "{{data}} favoris",
+		"statuses_count": "{{data}} tweets",
 		"profile_background_color": "personnalisation du compte",
 		"profile_background_image_url": "personnalisation du compte",
 		"profile_background_tile": "personnalisation du compte",
@@ -35,9 +43,13 @@ var TwitterSpy = function(username) {
 	}
 
 	this.baseClassName = "twitter-spytivity";
-	this.$el = $(document.createElement('div')).addClass(this.baseClassName).attr('data-twitter-username', this.username);
-	this.$el.append('<p class="' + this.baseClassName + '-status"></p>');
-	this.$el.append('<div class="' + this.baseClassName + '-changes"><h2>Dernières activités de @' + this.username + '</h2></div>');
+	var tpl =
+		'<div class="{{class}}" data-twitter-username="{{username}}">' +
+		'<p class="{{class}}-status"></p>' +
+		'<div class="{{class}}-changes"><h2>Dernières activités de @{{username}}</h2></div>' +
+		'</div>';
+	this.$el = $( tim(tpl, { "class": this.baseClassName, "username": this.username }) );
+
 	var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
 	if (lastChanges !== null) {
 		this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
@@ -65,7 +77,7 @@ TwitterSpy.prototype.check = function() {
 			var notif = [];
 			for (var changedProp in changed) {
 				notif.push( "\n" );
-				notif.push( that._parseString( that.watchedData[changedProp], changed[changedProp]) );
+				notif.push( tim( that.watchedData[changedProp], { data: changed[changedProp] }) );
 			}
 			notif = notif.join(' ');
 			//on alerte via notif webkit on une alerte normale
@@ -74,12 +86,12 @@ TwitterSpy.prototype.check = function() {
 			else
 				alert(notifTitle + "\n" + notif);
 
-			var change = $(document.createElement('div'))
-				.addClass(that.baseClassName + '-change')
-				.html(
-					'<span class="' + that.baseClassName + '-change-title">' + notifTitle + "</span>" +
-					'<span class="' + that.baseClassName + '-change-content">' + notif + "</span>"
-				);
+			var changeTpl =
+				'<div class="{{class}}-change">' +
+				'<span class="{{class}}-change-title">{{title}}</span>' +
+				'<span class="{{class}}-change-content">{{content}}</span>' +
+				'</div>';
+			var change = $( tim(changeTpl, { "class": that.baseClassName, "title": notifTitle, "content": notif }) );
 			that.$el.find('.' + that.baseClassName + '-changes').append(change);
 			localStorage.setItem(that.localStorageKey + '_lastChanges', that.$el.find('.' + that.baseClassName + '-changes').html());
 		}
@@ -118,14 +130,6 @@ TwitterSpy.prototype.stopChecking = function() {
 	this.$el.find('.' + this.baseClassName + '-status').html("J'espionne pas.");
 
 	return this;
-};
-TwitterSpy.prototype._parseString = function(str) {
-	var args = [].slice.call(arguments, 1),
-		i = 0;
-
-	return str.replace(/%s/g, function() {
-		return args[i++];
-	});
 };
 
 spy = new TwitterSpy('leimina');
