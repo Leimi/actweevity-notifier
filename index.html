@@ -54,6 +54,12 @@
 		this.baseClassName = "twitter-spyctivity";
 		this.$el = $(document.createElement('div')).addClass(this.baseClassName).attr('data-twitter-username', this.username);
 		this.$el.append('<p class="' + this.baseClassName + '-status"></p>');
+		this.$el.append('<div class="' + this.baseClassName + '-changes"><h2>Dernières activités de @' + this.username + '</h2></div>');
+		var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
+		if (lastChanges !== null) {
+			this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
+			localStorage.removeItem(this.localStorageKey + '_lastChanges');
+		}
 		this.$el.appendTo('#content');
 
 		return this;
@@ -84,6 +90,15 @@
 					window.webkitNotifications.createNotification('', notifTitle, notif).show();
 				else
 					alert(notifTitle + "\n" + notif);
+
+				var change = $(document.createElement('div'))
+					.addClass(that.baseClassName + '-change')
+					.html(
+						'<span class="' + that.baseClassName + '-change-title">' + notifTitle + "</span>" + 
+						'<span class="' + that.baseClassName + '-change-content">' + notif + "</span>"
+					)
+					.appendTo(that.$el.find('.' + that.baseClassName + '-changes'));
+				localStorage.setItem(that.localStorageKey + '_lastChanges', that.$el.find('.' + that.baseClassName + '-changes').html());
 			}
 
 			//on sauvegarde les données en local pour pouvoir comparer avec les nouvelles données au prochain check
