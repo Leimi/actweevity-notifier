@@ -6,6 +6,17 @@
 */
 var tim=function(){var e=/{{\s*([a-z0-9_][\\.a-z0-9_]*)\s*}}/gi;return function(f,g){return f.replace(e,function(h,i){for(var c=i.split("."),d=c.length,b=g,a=0;a<d;a++){b=b[c[a]];if(b===void 0)throw"tim: '"+c[a]+"' not found in "+h;if(a===d-1)return b}})}}();
 
+
+/**
+ * TwitterSpy
+ *
+ * Soyez prévenu quand un utilisateur de twitter est actif sur son compte
+ *
+ * utilisation: crééez une instance de l'espion en lui passant le nom du compte à surveiller et lancez la surveillance :
+ * var spy = new TwitterSpy('leimina').startWatching();
+ *
+ * @param {string} username [description]
+ */
 var TwitterSpy = function(username) {
 	if (!username || !window.localStorage)
 		return false;
