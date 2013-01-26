@@ -9,9 +9,11 @@
 </style>
 </head>
 <body>
-	<h1>Twitter Spyctivity</h1>
-	<button class="notif-on">Activer les notifications</button>
-	<span class="spy-status"></span>
+	<div id="content">
+		<h1>Twitter Spyctivity</h1>
+		
+		<button class="notif-on">Activer les notifications</button>
+	</div>
 <script>
 	var TwitterSpy = function(username) {
 		if (!username || !window.localStorage)
@@ -48,6 +50,11 @@
 				});;
 			});
 		}
+
+		this.baseClassName = "twitter-spyctivity";
+		this.$el = $(document.createElement('div')).addClass(this.baseClassName).attr('data-twitter-username', this.username);
+		this.$el.append('<p class="' + this.baseClassName + '-status"></p>');
+		this.$el.appendTo('#content');
 
 		return this;
 	};
@@ -100,7 +107,7 @@
 			that.check();
 		}, 1000*interval);
 
-		$('.spy-status').html("Je regarde, je regarde... tu seras notifié quand @" + this.username + " fera des trucs sur Twitter.");
+		this.$el.find('.twitter-spyctivity-status').html("Je regarde, je regarde... tu seras notifié quand @" + this.username + " fera des trucs sur Twitter.");
 
 		return this;
 	};
@@ -110,7 +117,7 @@
 			this.checking = false;
 		}
 
-		$('.spy-status').html("J'espionne pas.");
+		this.$el.find('.twitter-spyctivity-status').html("J'espionne pas.");
 
 		return this;
 	};
