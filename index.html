@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="utf-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <title>Twitter Spytivity</title>
 <style>
 	body { font-family: sans-serif; }
@@ -14,6 +13,8 @@
 
 		<button class="notif-on">Activer les notifications</button>
 	</div>
+
+<script src="js/tire.min.js"></script>
 <script>
 	var TwitterSpy = function(username) {
 		if (!username || !window.localStorage)
@@ -60,14 +61,14 @@
 			this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
 			localStorage.removeItem(this.localStorageKey + '_lastChanges');
 		}
-		this.$el.appendTo('#content');
+		$('#content').append(this.$el);
 
 		return this;
 	};
 	TwitterSpy.prototype.check = function() {
 		var that = this;
 		var now = new Date();
-		$.getJSON("https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?", function(data) {
+		$.ajax({ url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?" }, function(data) {
 			//on regarde quelles données ont changées depuis la dernière fois
 			var changed = {};
 			for (var prop in that.watchedData) {
@@ -96,8 +97,8 @@
 					.html(
 						'<span class="' + that.baseClassName + '-change-title">' + notifTitle + "</span>" +
 						'<span class="' + that.baseClassName + '-change-content">' + notif + "</span>"
-					)
-					.appendTo(that.$el.find('.' + that.baseClassName + '-changes'));
+					);
+				that.$el.find('.' + that.baseClassName + '-changes').append(change);
 				localStorage.setItem(that.localStorageKey + '_lastChanges', that.$el.find('.' + that.baseClassName + '-changes').html());
 			}
 
