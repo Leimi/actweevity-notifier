@@ -56,17 +56,23 @@ var TwitterSpy = function(username) {
 	this.baseClassName = "twitter-spytivity";
 	var tpl =
 		'<div class="{{class}}" data-twitter-username="{{username}}">' +
+		'<h2 class="{{class}}-title">Dernières activités de @{{username}}</h2>' +
 		'<p class="{{class}}-status"></p>' +
-		'<div class="{{class}}-changes"><h2>Dernières activités de @{{username}}</h2></div>' +
+		'<div class="{{class}}-changes"></div>' +
+		'<button class="{{class}}-delete">Supprimer ce compte</button>' +
 		'</div>';
 	this.$el = $( tim(tpl, { "class": this.baseClassName, "username": this.username }) );
-
 	var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
 	if (lastChanges !== null) {
 		this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
 		localStorage.removeItem(this.localStorageKey + '_lastChanges');
 	}
 	$('#content').append(this.$el);
+
+	var that = this;
+	this.$el.find('.' + this.baseClassName + '-delete').on('click', function(e) {
+		that.autoDestroy();
+	});
 
 	return this;
 };
@@ -142,5 +148,11 @@ TwitterSpy.prototype.stopChecking = function() {
 
 	return this;
 };
-
-spy = new TwitterSpy('leimina');
+TwitterSpy.prototype.autoDestroy = function() {
+	this.stopChecking();
+	localStorage.removeItem( this.localStorageKey );
+	localStorage.removeItem( this.localStorageKey + '_lastChanges' );
+	this.$el.remove();
+};
+spy = new TwitterSpy('leimina').startChecking();
+spyb = new TwitterSpy('_fg_').startChecking();
