@@ -71,7 +71,7 @@
 			}
 
 			if (JSON.stringify(changed) !== "{}" && JSON.stringify(that.pastData) !== "{}") {
-				var notifTitle = 'Nouvelle activité à ' + now.getHours() + 'h' + now.getMinutes();
+				var notifTitle = 'Nouvelle activité le ' + now.getDate() + '/' + now.getMonth()+1 + '/' + now.getFullYear() + ' à ' + now.getHours() + 'h' + now.getMinutes();
 				//on construit le message de notification avec les données qui ont changées
 				var notif = [];
 				for (var changedProp in changed) {
