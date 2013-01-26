@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<title>Twitter Spyctivity</title>
+<title>Twitter Spytivity</title>
 <style>
 	body { font-family: sans-serif; }
 </style>
 </head>
 <body>
 	<div id="content">
-		<h1>Twitter Spyctivity</h1>
-		
+		<h1>Twitter Spytivity</h1>
+
 		<button class="notif-on">Activer les notifications</button>
 	</div>
 <script>
@@ -51,7 +51,7 @@
 			});
 		}
 
-		this.baseClassName = "twitter-spyctivity";
+		this.baseClassName = "twitter-spytivity";
 		this.$el = $(document.createElement('div')).addClass(this.baseClassName).attr('data-twitter-username', this.username);
 		this.$el.append('<p class="' + this.baseClassName + '-status"></p>');
 		this.$el.append('<div class="' + this.baseClassName + '-changes"><h2>Dernières activités de @' + this.username + '</h2></div>');
@@ -94,7 +94,7 @@
 				var change = $(document.createElement('div'))
 					.addClass(that.baseClassName + '-change')
 					.html(
-						'<span class="' + that.baseClassName + '-change-title">' + notifTitle + "</span>" + 
+						'<span class="' + that.baseClassName + '-change-title">' + notifTitle + "</span>" +
 						'<span class="' + that.baseClassName + '-change-content">' + notif + "</span>"
 					)
 					.appendTo(that.$el.find('.' + that.baseClassName + '-changes'));
@@ -122,7 +122,7 @@
 			that.check();
 		}, 1000*interval);
 
-		this.$el.find('.twitter-spyctivity-status').html("Je regarde, je regarde... tu seras notifié quand @" + this.username + " fera des trucs sur Twitter.");
+		this.$el.find('.' + this.baseClassName + '-status').html("Je regarde, je regarde... tu seras notifié quand @" + this.username + " fera des trucs sur Twitter.");
 
 		return this;
 	};
@@ -132,7 +132,7 @@
 			this.checking = false;
 		}
 
-		this.$el.find('.twitter-spyctivity-status').html("J'espionne pas.");
+		this.$el.find('.' + this.baseClassName + '-status').html("J'espionne pas.");
 
 		return this;
 	};
