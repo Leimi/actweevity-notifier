@@ -39,7 +39,9 @@ var TwitterSpy = function(username) {
 	};
 	this.localStorageKey = "twitterspy_" + username;
 	this.pastData = JSON.parse(localStorage.getItem(this.localStorageKey)) || {};
-
+	if (JSON.stringify(this.pastData) === "{}") {
+		localStorage.setItem(this.localStorageKey, "{}");
+	}
 	this.checking = false;
 
 	if (!window.webkitNotifications || window.webkitNotifications.checkPermission() === 0)
