@@ -44,17 +44,6 @@ var TwitterSpy = function(username) {
 	}
 	this.checking = false;
 
-	if (!window.webkitNotifications || window.webkitNotifications.checkPermission() === 0)
-		$('.notif-on').hide();
-	else {
-		$('.notif-on').on('click', function(e) {
-			window.webkitNotifications.requestPermission(function() {
-				if (window.webkitNotifications.checkPermission() === 0)
-					$('.notif-on').hide();
-			});
-		});
-	}
-
 	this.baseClassName = "twitter-spytivity";
 	var tpl =
 		'<div class="{{class}}" data-twitter-username="{{username}}" data-active="{{active}}">' +
@@ -179,6 +168,17 @@ TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
 	}
 	this.$el.attr('data-active', switchTo);
 };
+
+if (!window.webkitNotifications || window.webkitNotifications.checkPermission() === 0)
+	$('.notif-on').hide();
+else {
+	$('.notif-on').on('click', function(e) {
+		window.webkitNotifications.requestPermission(function() {
+			if (window.webkitNotifications.checkPermission() === 0)
+				$('.notif-on').hide();
+		});
+	});
+}
 
 if (window.localStorage) {
 	for (var key in window.localStorage) {
