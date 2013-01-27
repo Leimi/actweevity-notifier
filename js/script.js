@@ -57,14 +57,13 @@ var TwitterSpy = function(username) {
 
 	this.baseClassName = "twitter-spytivity";
 	var tpl =
-		'<div class="{{class}}" data-twitter-username="{{username}}">' +
-		'<h2 class="{{class}}-title">Dernières activités de @{{username}}</h2>' +
-		'<span class="{{class}}-status" data-status-on="Surveillance en cours" data-status-off="Surveillance arrêtée"></span>' +
+		'<div class="{{class}}" data-twitter-username="{{username}}" data-active="{{active}}">' +
+		'<h2 class="{{class}}-title">@{{username}}</h2>' +
 		'<button class="{{class}}-status-switch" data-status-off="Activer la surveillance" data-status-on="Arrêter la surveillance"></button>' +
 		'<div class="{{class}}-changes"></div>' +
-		'<button class="{{class}}-delete">Supprimer ce compte</button>' +
+		'<button class="{{class}}-delete" title="Supprimer ce compte">×</button>' +
 		'</div>';
-	this.$el = $( tim(tpl, { "class": this.baseClassName, "username": this.username }) );
+	this.$el = $( tim(tpl, { "class": this.baseClassName, "username": this.username, "active": this.checking }) );
 	this._toggleStatusLabels( this.checking );
 	var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
 	if (lastChanges !== null) {
@@ -174,14 +173,12 @@ TwitterSpy.prototype.autoDestroy = function() {
 };
 TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
 	var statusButton = this.$el.find('.' + this.baseClassName + '-status-switch');
-	var status = this.$el.find('.' + this.baseClassName + '-status');
 	if (switchTo) {
 		statusButton.html( statusButton.attr('data-status-on') );
-		status.html( status.attr('data-status-on') );
 	} else {
 		statusButton.html( statusButton.attr('data-status-off') );
-		status.html( status.attr('data-status-off') );
 	}
+	this.$el.attr('data-active', switchTo);
 };
 
 if (window.localStorage) {
