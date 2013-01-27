@@ -197,5 +197,6 @@ if (window.localStorage) {
 
 $('.add-twitter-spy').on('submit', function(e) {
 	new TwitterSpy( $(this).find('input[name=username]').val() ).startChecking();
+	$(this).find('input[name=username]').val('');
 	e.preventDefault();
 });
