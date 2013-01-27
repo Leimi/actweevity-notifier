@@ -186,8 +186,8 @@ TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
 
 if (window.localStorage) {
 	for (var key in window.localStorage) {
-		if (key.indexOf('twitterspy_') === 0) {
 			new TwitterSpy( key.substring('twitterspy_'.length) );
+		if (key.indexOf('twitterspy_') === 0 && !/twitterspy_.*_lastChanges/.test(key)) {
 		}
 	}
 }
