@@ -1,4 +1,4 @@
-actweevity-notifier
+Actweevity Notifier
 ===================
 
 Soyez notifié quand un utilisateur de Twitter est actif sur son compte (protégé ou non).
