@@ -79,7 +79,7 @@ var TwitterSpy = function(username) {
 TwitterSpy.prototype.check = function() {
 	var that = this;
 	var now = new Date();
-	$.ajax({ url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?" }, function(data) {
+	$.ajax({ url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?", success: function(data) {
 		//on regarde quelles données ont changées depuis la dernière fois
 		var changed = {};
 		for (var prop in that.watchedData) {
@@ -122,7 +122,7 @@ TwitterSpy.prototype.check = function() {
 			}
 		}
 		localStorage.setItem(that.localStorageKey, JSON.stringify(toSave));
-	});
+	} });
 
 	return this;
 };
