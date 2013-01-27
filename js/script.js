@@ -13,7 +13,7 @@ var tim=function(){var e=/{{\s*([a-z0-9_][\\.a-z0-9_]*)\s*}}/gi;return function(
  * Soyez prévenu quand un utilisateur de twitter est actif sur son compte
  *
  * utilisation: crééez une instance de l'espion en lui passant le nom du compte à surveiller et lancez la surveillance :
- * var spy = new TwitterSpy('leimina').startWatching();
+ * var spy = new TwitterSpy('leimina').startChecking();
  *
  * @param {string} username [description]
  */
