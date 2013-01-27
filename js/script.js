@@ -127,8 +127,8 @@ TwitterSpy.prototype.check = function() {
 	return this;
 };
 TwitterSpy.prototype.startChecking = function(interval) {
+	interval = interval || 60;
 	var that = this;
-	interval = interval || 30;
 	this.check();
 	this.checking = setInterval(function() {
 		that.check();
