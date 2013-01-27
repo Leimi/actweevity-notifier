@@ -68,7 +68,6 @@ var TwitterSpy = function(username) {
 	var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
 	if (lastChanges !== null) {
 		this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
-		localStorage.removeItem(this.localStorageKey + '_lastChanges');
 	}
 	$('#content').append(this.$el);
 
