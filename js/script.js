@@ -186,13 +186,13 @@ TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
 
 if (window.localStorage) {
 	for (var key in window.localStorage) {
-			new TwitterSpy( key.substring('twitterspy_'.length) );
 		if (key.indexOf('twitterspy_') === 0 && !/twitterspy_.*_lastChanges/.test(key)) {
+			new TwitterSpy( key.substring('twitterspy_'.length) ).startChecking();
 		}
 	}
 }
 
 $('.add-twitter-spy').on('submit', function(e) {
-	new TwitterSpy( $(this).find('input[name=username]').val() );
+	new TwitterSpy( $(this).find('input[name=username]').val() ).startChecking();
 	e.preventDefault();
 });
