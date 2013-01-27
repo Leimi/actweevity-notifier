@@ -57,11 +57,13 @@ var TwitterSpy = function(username) {
 	var tpl =
 		'<div class="{{class}}" data-twitter-username="{{username}}">' +
 		'<h2 class="{{class}}-title">Dernières activités de @{{username}}</h2>' +
-		'<p class="{{class}}-status"></p>' +
+		'<span class="{{class}}-status" data-status-on="Surveillance en cours" data-status-off="Surveillance arrêtée"></span>' +
+		'<button class="{{class}}-status-switch" data-status-off="Activer la surveillance" data-status-on="Arrêter la surveillance"></button>' +
 		'<div class="{{class}}-changes"></div>' +
 		'<button class="{{class}}-delete">Supprimer ce compte</button>' +
 		'</div>';
 	this.$el = $( tim(tpl, { "class": this.baseClassName, "username": this.username }) );
+	this._toggleStatusLabels( this.checking );
 	var lastChanges = localStorage.getItem(this.localStorageKey + '_lastChanges');
 	if (lastChanges !== null) {
 		this.$el.find('.' + this.baseClassName + '-changes').html(lastChanges);
@@ -70,6 +72,10 @@ var TwitterSpy = function(username) {
 	$('#content').append(this.$el);
 
 	var that = this;
+	this.$el.find('.' + this.baseClassName + '-status-switch').on('click', function(e) {
+		e.preventDefault();
+		that.toggleStatus();
+	});
 	this.$el.find('.' + this.baseClassName + '-delete').on('click', function(e) {
 		that.autoDestroy();
 	});
@@ -134,7 +140,7 @@ TwitterSpy.prototype.startChecking = function(interval) {
 		that.check();
 	}, 1000*interval);
 
-	this.$el.find('.' + this.baseClassName + '-status').html("Je regarde, je regarde... tu seras notifié quand @" + this.username + " fera des trucs sur Twitter.");
+	this._toggleStatusLabels(true);
 
 	return this;
 };
@@ -144,16 +150,36 @@ TwitterSpy.prototype.stopChecking = function() {
 		this.checking = false;
 	}
 
-	this.$el.find('.' + this.baseClassName + '-status').html("J'espionne pas.");
+	this._toggleStatusLabels(false);
 
 	return this;
+};
+TwitterSpy.prototype.toggleStatus = function() {
+	if (this.checking)
+		return this.stopChecking();
+	return this.startChecking();
 };
 TwitterSpy.prototype.autoDestroy = function() {
 	this.stopChecking();
 	localStorage.removeItem( this.localStorageKey );
 	localStorage.removeItem( this.localStorageKey + '_lastChanges' );
 	this.$el.remove();
+
+	return this;
 };
+TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
+	var statusButton = this.$el.find('.' + this.baseClassName + '-status-switch');
+	var status = this.$el.find('.' + this.baseClassName + '-status');
+	if (switchTo) {
+		statusButton.html( statusButton.attr('data-status-on') );
+		status.html( status.attr('data-status-on') );
+	} else {
+		statusButton.html( statusButton.attr('data-status-off') );
+		status.html( status.attr('data-status-off') );
+	}
+};
+
+
 $('.add-twitter-spy').on('submit', function(e) {
 	new TwitterSpy( $(this).find('input[name=username]').val() );
 	e.preventDefault();
