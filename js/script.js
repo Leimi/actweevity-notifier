@@ -121,6 +121,8 @@ TwitterSpy.prototype.check = function() {
 				}
 			}
 			localStorage.setItem(that.localStorageKey, JSON.stringify(toSave));
+
+			localStorage.setItem(that.localStorageKey + '_lastCheckTime', now.getTime());
 		}
 	});
 
@@ -129,7 +131,10 @@ TwitterSpy.prototype.check = function() {
 TwitterSpy.prototype.startChecking = function(interval) {
 	interval = interval || 60;
 	var that = this;
-	this.check();
+	var lastCheckTime = localStorage.getItem(this.localStorageKey + '_lastCheckTime');
+	if ( !(lastCheckTime !== null && (Date.now() - lastCheckTime) < interval*1000) ) {
+		this.check();
+	}
 	this.checking = setInterval(function() {
 		that.check();
 	}, 1000*interval);
@@ -184,7 +189,7 @@ else {
 
 if (window.localStorage) {
 	for (var key in window.localStorage) {
-		if (key.indexOf('twitterspy_') === 0 && !/twitterspy_.*_lastChanges/.test(key)) {
+		if (key.indexOf('twitterspy_') === 0 && !/twitterspy_.*_last.*/.test(key)) {
 			new TwitterSpy( key.substring('twitterspy_'.length) ).startChecking();
 		}
 	}
