@@ -154,5 +154,7 @@ TwitterSpy.prototype.autoDestroy = function() {
 	localStorage.removeItem( this.localStorageKey + '_lastChanges' );
 	this.$el.remove();
 };
-spy = new TwitterSpy('leimina').startChecking();
-spyb = new TwitterSpy('_fg_').startChecking();
+$('.add-twitter-spy').on('submit', function(e) {
+	new TwitterSpy( $(this).find('input[name=username]').val() );
+	e.preventDefault();
+});
