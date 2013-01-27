@@ -182,6 +182,13 @@ TwitterSpy.prototype._toggleStatusLabels = function(switchTo) {
 	}
 };
 
+if (window.localStorage) {
+	for (var key in window.localStorage) {
+		if (key.indexOf('twitterspy_') === 0) {
+			new TwitterSpy( key.substring('twitterspy_'.length) );
+		}
+	}
+}
 
 $('.add-twitter-spy').on('submit', function(e) {
 	new TwitterSpy( $(this).find('input[name=username]').val() );
