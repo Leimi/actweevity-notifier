@@ -1,0 +1,64 @@
+body { 
+	font-family: sans-serif; 
+	font-size: 100%;
+	line-height: 1.4;
+	background: whiteSmoke;
+}
+
+#content {
+	margin: 10px;
+}
+
+.add-twitter-spy {
+	margin: 10px 0 30px;
+	> * {
+		display: inline-block;
+	}
+}
+
+$spy: twitter-spytivity;
+
+.#{$spy} {
+	background: white;
+	display: inline-block;
+	position: relative;
+	padding: 10px 26px 10px 10px;
+	margin: 10px 10px 10px 0;
+	border-radius: 3px;
+	border: 1px solid #444;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	&[data-active=true] {
+		border-color: #468847;
+	}
+	&[data-active=false] {
+		border-color: #B94A48;
+	}
+}
+
+.#{$spy}-title {
+	margin: 0 0 10px;
+}
+
+.#{$spy}-status-switch {
+
+}
+
+.#{$spy}-delete {
+	cursor: pointer;
+	font-weight: bold;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	font-size: 20px;
+	line-height: 20px;
+	padding: 3px 6px;
+	border-radius: 3px;
+	margin: 0;
+	color: #000;
+	opacity: 0.5;
+	background: none;
+	&:hover, &:focus {
+		opacity: 1;
+	}
+}
