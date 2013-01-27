@@ -85,50 +85,53 @@ var TwitterSpy = function(username) {
 TwitterSpy.prototype.check = function() {
 	var that = this;
 	var now = new Date();
-	$.ajax({ url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?", success: function(data) {
-		//on regarde quelles données ont changées depuis la dernière fois
-		var changed = {};
-		for (var prop in that.watchedData) {
-			if (data.hasOwnProperty(prop) && data[prop] != that.pastData[prop]) {
-				changed[prop] = data[prop];
+	$.ajax({
+		url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?",
+		success: function(data) {
+			//on regarde quelles données ont changées depuis la dernière fois
+			var changed = {};
+			for (var prop in that.watchedData) {
+				if (data.hasOwnProperty(prop) && data[prop] != that.pastData[prop]) {
+					changed[prop] = data[prop];
+				}
 			}
-		}
 
-		if (JSON.stringify(changed) !== "{}" && JSON.stringify(that.pastData) !== "{}") {
-			var notifTitle = 'Nouvelle activité le ' + now.getDate() + '/' + now.getMonth()+1 + '/' + now.getFullYear() + ' à ' + now.getHours() + 'h' + now.getMinutes();
-			//on construit le message de notification avec les données qui ont changées
-			var notif = [];
-			for (var changedProp in changed) {
-				notif.push( "\n" );
-				notif.push( tim( that.watchedData[changedProp], { data: changed[changedProp] }) );
+			if (JSON.stringify(changed) !== "{}" && JSON.stringify(that.pastData) !== "{}") {
+				var notifTitle = 'Nouvelle activité le ' + now.getDate() + '/' + now.getMonth()+1 + '/' + now.getFullYear() + ' à ' + now.getHours() + 'h' + now.getMinutes();
+				//on construit le message de notification avec les données qui ont changées
+				var notif = [];
+				for (var changedProp in changed) {
+					notif.push( "\n" );
+					notif.push( tim( that.watchedData[changedProp], { data: changed[changedProp] }) );
+				}
+				notif = notif.join(' ');
+				//on alerte via notif webkit on une alerte normale
+				if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0)
+					window.webkitNotifications.createNotification('', notifTitle, notif).show();
+				else
+					alert(notifTitle + "\n" + notif);
+
+				var changeTpl =
+					'<div class="{{class}}-change">' +
+					'<span class="{{class}}-change-title">{{title}}</span>' +
+					'<span class="{{class}}-change-content">{{content}}</span>' +
+					'</div>';
+				var change = $( tim(changeTpl, { "class": that.baseClassName, "title": notifTitle, "content": notif }) );
+				that.$el.find('.' + that.baseClassName + '-changes').append(change);
+				localStorage.setItem(that.localStorageKey + '_lastChanges', that.$el.find('.' + that.baseClassName + '-changes').html());
 			}
-			notif = notif.join(' ');
-			//on alerte via notif webkit on une alerte normale
-			if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0)
-				window.webkitNotifications.createNotification('', notifTitle, notif).show();
-			else
-				alert(notifTitle + "\n" + notif);
 
-			var changeTpl =
-				'<div class="{{class}}-change">' +
-				'<span class="{{class}}-change-title">{{title}}</span>' +
-				'<span class="{{class}}-change-content">{{content}}</span>' +
-				'</div>';
-			var change = $( tim(changeTpl, { "class": that.baseClassName, "title": notifTitle, "content": notif }) );
-			that.$el.find('.' + that.baseClassName + '-changes').append(change);
-			localStorage.setItem(that.localStorageKey + '_lastChanges', that.$el.find('.' + that.baseClassName + '-changes').html());
-		}
-
-		//on sauvegarde les données en local pour pouvoir comparer avec les nouvelles données au prochain check
-		var toSave = {};
-		for (var i in that.watchedData) {
-			if (data.hasOwnProperty(i)) {
-				that.pastData[i] = data[i];
-				toSave[i] = data[i];
+			//on sauvegarde les données en local pour pouvoir comparer avec les nouvelles données au prochain check
+			var toSave = {};
+			for (var i in that.watchedData) {
+				if (data.hasOwnProperty(i)) {
+					that.pastData[i] = data[i];
+					toSave[i] = data[i];
+				}
 			}
+			localStorage.setItem(that.localStorageKey, JSON.stringify(toSave));
 		}
-		localStorage.setItem(that.localStorageKey, JSON.stringify(toSave));
-	} });
+	});
 
 	return this;
 };
