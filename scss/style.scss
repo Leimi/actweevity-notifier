@@ -1,5 +1,17 @@
+@import 'compass/css3';
+.clearfix {
+	&:before, &:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+	*zoom: 1;
+}
+
 body { 
-	font-family: sans-serif; 
+	font-family: Helvetica, Arial, sans-serif; 
 	font-size: 100%;
 	line-height: 1.4;
 	background: whiteSmoke;
@@ -16,10 +28,22 @@ body {
 	}
 }
 
+.button {
+	@include background(linear-gradient(top, white, #E6E6E6));
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+	border: 1px solid #BBB;
+	border-radius: 4px;
+	padding: 4px 12px;
+	display: inline-block;
+	cursor: pointer;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+
 $spy: twitter-spytivity;
 
 .#{$spy} {
 	background: white;
+	min-width: 400px;
 	display: inline-block;
 	position: relative;
 	padding: 10px 26px 10px 10px;
@@ -35,12 +59,47 @@ $spy: twitter-spytivity;
 	}
 }
 
-.#{$spy}-title {
+.#{$spy}-header {
+	@extend .clearfix;
+	* {
+		line-height: 32px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+	.#{$spy}-title {
+		float: left;
+	}
+	.#{$spy}-status-switch {
+		float: right;
+	}
 	margin: 0 0 10px;
+
+
+	.#{$spy}-status-switch {
+		line-height: 1.4;
+		@extend .button;
+	}
 }
 
-.#{$spy}-status-switch {
+.#{$spy}[data-active=false] .#{$spy}-status-switch {
+	&:hover, &:focus {
+		color: white;
+		background-color: #5BB75B;
+		@include background(linear-gradient(top, #62C462, #51A351));
+		border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	}
+}
 
+.#{$spy}[data-active=true] .#{$spy}-status-switch {
+	&:hover, &:focus {
+		color: white;
+		background-color: #DA4F49;
+		@include background(linear-gradient(top, #EE5F5B, #BD362F));
+		border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	}
 }
 
 .#{$spy}-delete {

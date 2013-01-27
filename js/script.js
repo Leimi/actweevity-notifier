@@ -47,8 +47,10 @@ var TwitterSpy = function(username) {
 	this.baseClassName = "twitter-spytivity";
 	var tpl =
 		'<div class="{{class}}" data-twitter-username="{{username}}" data-active="{{active}}">' +
+		'<div class="{{class}}-header">' +
 		'<h2 class="{{class}}-title">@{{username}}</h2>' +
 		'<button class="{{class}}-status-switch" data-status-off="Activer la surveillance" data-status-on="Arrêter la surveillance"></button>' +
+		'</div>' +
 		'<div class="{{class}}-changes"></div>' +
 		'<button class="{{class}}-delete" title="Supprimer ce compte">×</button>' +
 		'</div>';
