@@ -1,4 +1,7 @@
 <?php
+
+define(WEBSITE_URL, 'http://manu.habite.la/actweevity-notifier/');
+
 require __DIR__ . '/vendor/autoload.php';
 include __DIR__. '/php/TwitterApp.php';
 include __DIR__. '/php/twitterKeys.php';
@@ -9,7 +12,7 @@ try {
 		'consumer_secret'   => CONSUMER_SECRET
 	);
 
-	$app = new TwitterApp(new \Themattharris\TmhOAuth($config), array('callback_url' => 'http://manu.habite.la/actweevity-notifier/'));
+	$app = new TwitterApp(new \Themattharris\TmhOAuth($config), array('callback_url' => WEBSITE_URL));
 
 	if ($app->isAuthed()) {
 		if (!empty($_GET['screen_name'])) {
