@@ -77,7 +77,8 @@ TwitterSpy.prototype.check = function() {
 	var that = this;
 	var now = new Date();
 	$.ajax({
-		url: "https://api.twitter.com/1/users/show.json?screen_name=" + this.username + "&include_entities=true&callback=?",
+		url: "twitter.php?screen_name=" + this.username,
+		dataType: "json",
 		success: function(data) {
 			//on regarde quelles données ont changées depuis la dernière fois
 			var changed = {};

@@ -1,1 +1,7 @@
 .sass-cache
+vendor
+composer.lock
+composer.phar
+*.sublime-*
+sftp-config.json
+php/twitterKeys.php
