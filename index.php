@@ -16,6 +16,7 @@
 				<button class="twitter-button">Se connecter avec Twitter</button>
 			</form>
 		<?php else: ?>
+		<a class="twitter-button twitter-logout"href="twitter.php?logout=1">Se déconnecter</a>
 		<button class="notif-on button">Activer les notifications</button>
 
 		<form action="#" class="add-twitter-spy">

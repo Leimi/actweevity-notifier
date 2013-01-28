@@ -37,6 +37,8 @@ body {
 	display: inline-block;
 	cursor: pointer;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	color: black;
+	text-decoration: none;
 }
 
 .twitter-button {
@@ -45,6 +47,12 @@ body {
 	@include background(url(../img/twitter-bird.png), linear-gradient(top, white, #E6E6E6));
 	background-repeat: no-repeat;
 	background-position: 6px 50%, top left;
+}
+
+.twitter-logout {
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
 
 $spy: twitter-spytivity;

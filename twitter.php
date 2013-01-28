@@ -20,6 +20,10 @@ try {
 				echo $app->getUserInfo($_GET['screen_name']);
 			}
 		}
+		if (!empty($_GET['logout'])) {
+			$app->endSession();
+			header('Location: ' .WEBSITE_URL);
+		}
 	} elseif (isset($_POST['auth'])) {
 		$app->auth();
 	} else {
